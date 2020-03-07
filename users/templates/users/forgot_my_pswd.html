@@ -1,0 +1,15 @@
+{% extends "wordsinmovies_main/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+
+<form method="post" style="width:100%; max-width:400px;" action="{% url 'users:forgot_my_pswd' %}" class="mt-5 centered">
+  <p style="text-align:center;">Enter the email adress used for the registration. <br> You will receive a link to reset your password.</p>
+  {% csrf_token %}
+  {% render_field form.email class="form-control"  style="margin:1em"%}
+  <div>
+  <button type="submit" class="btn btn-primary mx-auto" style="width:100px;display:block">Send</button>
+  </div>
+</form>
+{% endblock content %}

@@ -1,0 +1,154 @@
+{% extends "wordsinmovies_main/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block extra_css %}
+
+<style>
+
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  td {
+    padding-left:1em;
+    padding-right:1em;
+  }
+
+</style>
+
+{% endblock extra_css %}
+
+{% block content %}
+
+<div class="container" style="max-width:800px; padding-bottom:2em;">
+
+<h4 style="padding-top: 2em;"> General remarks </h4>
+
+<p>
+When you search for a word or a phrase, the search engine yields
+3-sentence excerpts from subtitles files containing you request.
+</p>
+
+<p>
+The results are then ranked according to the proximity of the searched items:
+the closer these words are in excerpt, the higher this excerpt is in the results table.
+<!-- For performance reasons, the search stops when 10000 excerpts can be generated. -->
+</p>
+
+<p>
+Below each row of results you can find a link to the movie description card in the
+<a href="https://imdb.com"> imdb.com</a> and sometimes the title of the film
+in one or both languages.
+</p>
+
+<p>
+Data for different language pairs is stored in different tables, so you may have
+different results for the same search string and different output languages.
+</p>
+
+<p>
+To learn how the databases are analyzed and the search is implemented, view the
+<a href="{% url 'wordsinmovies_main:technical_note'%}">technical note</a>.
+</p>
+
+
+<h4> Search requests</h4>
+
+<h5 style="padding-top: 1em;"> Some examples </h5>
+
+You can use the following commands in the search string:
+<ul>
+  <li> <b>take my breath away</b><br>
+    The result should contain all words from the request. </li>
+  <li> <b>take|my|breath|away</b><br>
+    The result should include at least one of the words from the request. </li>
+  <li> <b> "take my breath away"</b><br>
+    The result will contain the requested words one immediately followed by another.</li>
+  <li> <b> "my breath"~N</b><br>
+    Looks for the words "my" and "breath" separated by no more than N other words.</li>
+  <li> <b> my &lt&lt breath </b><br>
+    The word "my" should precede the word "breath".</li>
+  <li> <b> =take</b><br>
+    The result should contain the exact form "take",
+  contrary to "takes", "took" etc. allowed by all the previous examples.</li>
+  <li> <b> ="take a breath"</b><br>
+    All words should be present in a given form and follow one another. </li>
+
+</ul>
+You can also use parenthesis to group operators, e.g. ("bring into")|("take out")
+will result in sentences containing phrasal verbs "bring into" OR "take out".
+
+<h5 style="padding-top: 1em;"> POS tags</h5>
+
+<p>
+Most nouns, verbs, adjectives and adverbs are stored in the databases alongside with
+the corresponding part-of-speech (POS) tag. So, if you want to search for the word "light"
+as an adjective, you should perform the following query:
+</p>
+
+<p>
+<b> light_JJ </b>
+</p>
+
+<p>
+The following POS tags can be processed:
+<table>
+  <tr>
+    <td> NN </td>
+    <td> nouns</td>
+  </tr>
+  <tr>
+    <td> NP </td>
+    <td> proper nouns</td>
+  </tr>
+  <tr>
+    <td> VB </td>
+    <td> verbs </td>
+  </tr>
+  <tr>
+    <td> RB </td>
+    <td> adverbs </td>
+  </tr>
+  <tr>
+    <td> JJ </td>
+    <td> adjectives </td>
+  </tr>
+</table>
+</p>
+
+<p>
+<span style="color:#ff5050">For the monent, POS tags are not available for the Russian language.</span>
+</p>
+
+<h5 style="padding-top: 1em;"> Wildcards </h5>
+
+<p>
+Wildcards (*) are acceptable in search. The length of the rest of the word should not be
+smaller than 3 symbols: "work*" will result in words such as "working", "workable",
+"workload" etc., while "wi*" will be discarded as this request contains only two unmasked symbols.
+</p>
+
+<!-- <p>
+Remember that words are stored with their tags, so if you wish to find nouns ending with "-ment",
+you should use <b>*ment_NN</b> or <b>*ment_*</b> instead of <b>*ment</b>.
+</p> -->
+
+<p>
+Although it may be tempting to perform queries like <b>*_NN</b> or <b>*_JJ</b> to look for all
+nouns or all adjectives, such requests would result in a too long query time and, therefore,
+all requests like <b>*_tag</b> will be discarded.
+</p>
+
+<h4> Limitations </h4>
+Unregistered users can make up to <b>50</b> queries per day, for registered users the number of queries is limited by
+<b>100</b>. This is a preventive measure to protect the server from attacks and avoid overcharge.
+
+<div style="padding-top: 2em;">
+<b>For all questions and suggestions, please contact the author by e-mail:</b> <a href="#">vilovskimail@gmail.com</a>
+</div>
+
+</div>
+
+
+{% endblock content %}

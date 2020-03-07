@@ -1,0 +1,254 @@
+{% extends "wordsinmovies_main/base.html" %}
+{% load widget_tweaks %}
+
+{% block extra_css %}
+
+<style>
+
+  th {border: 1px solid black; text-align: center; background-color: #FFFFFF;}
+  td {border: 1px solid black}
+  tr:nth-child(even) {background-color: #f2f2f2;}
+  tr:nth-child(odd) {background-color: #ffffff;}
+  table {text-align:left; border-collapse: collapse;}
+
+  .marked{
+    background-color:#ffff99;
+  }
+
+  #toggle_button{
+    position: absolute;
+    bottom: 0em;
+    width: 50px;
+    height: 55%;
+    font-size: 25px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    background-color: #FFFF;
+  }
+
+  #title{
+    color: white;
+    /* text-shadow: -1px 0 #e67300, 0 1px  #e67300, 1px 0  #e67300, 0 -1px  #e67300; */
+    text-shadow: 0 0 0.2em #04519b, 0 0 0.2em #04519b;/*,  0 0 0.2em #0066ff;*/
+    text-align: center;
+    margin-top: 0.8em;
+  }
+
+</style>
+{% endblock extra_css %}
+
+{% block extra_js %}
+
+<script>
+
+  var language_code = {Russian: "ru", English: "en", French: "fr"};
+  var language_map = {English: ["Russian", "French"], Russian: ["English"], French: ["English"]};
+
+  function update_lang2(){
+    var lang1_selector = document.getElementById("first_language");
+    var lang2_selector = document.getElementById("second_language");
+    var lang1 = lang1_selector.options[lang1_selector.selectedIndex].text;
+
+    lang2_selector.options.length = 0;
+
+    for (i=0; i<language_map[lang1].length; i++){
+      lang2_selector.options[i] = new Option(language_map[lang1][i], language_code[language_map[lang1][i]])
+    }
+  }
+
+  function ToggleLanguages(){
+
+    var lang1_selector = document.getElementById("first_language");
+    var lang2_selector = document.getElementById("second_language");
+    var lang1 = lang1_selector.options[lang1_selector.selectedIndex].text;
+    var lang2 = lang2_selector.options[lang2_selector.selectedIndex].text;
+
+    if (language_map[lang2].includes(lang1)) {
+      lang1_selector.value=language_code[lang2];
+      update_lang2();
+      lang2_selector.value=language_code[lang1];
+    }
+
+  }
+
+  window.onload = function() {
+
+    // update_lang2();
+
+    // if ('{{languages.1}}'!='') {
+    //   document.getElementById("second_language").value = '{{languages.1}}'
+    // }
+
+      document.getElementById('first_language').onchange = update_lang2;
+
+    //   var user_auth = "{{user.is_authenticated}}"
+    //   var sci_mode_requests = "{{user.profile.sci_mode_requests}}"
+    //
+    //   if (user_auth == "False" || sci_mode_requests == "0") {
+    //
+    //   document.getElementById('sci_mode_label').classList.add("text-muted");
+    //   document.getElementById('sci_mode').disabled = true;
+    //   document.getElementById('sci_mode').checked == false;
+    //   }
+    //   else {
+    //   document.getElementById('sci_mode_label').classList.remove("text-muted");
+    //   document.getElementById('sci_mode').disabled = false;
+    //   }
+    //
+    //   function ChangePOStagsState() {
+    //   if (document.getElementById('sci_mode').checked == false)
+    //       {
+    //     document.getElementById('pos_tags_label').classList.add("text-muted");
+    //     document.getElementById('pos_tags').disabled = true;
+    //   }
+    //   else {
+    //     document.getElementById('pos_tags_label').classList.remove("text-muted");
+    //     document.getElementById('pos_tags').disabled = false;
+    //   }
+    // };
+    //
+    //   ChangePOStagsState();
+    //   document.getElementById("sci_mode").addEventListener("click", ChangePOStagsState);
+
+  };
+
+  function ShowExtraOptions(){
+    var content = document.getElementById("extra_options");
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  }
+
+</script>
+
+{% endblock extra_js %}
+
+{% block content %}
+
+<h1 id="title">WordsInMovies</h1>
+<div style="text-align:center; margin-top:2em; color:lightgray;">Learn how words are used in spoken language based on
+the free movie subtitles database <a href="https://www.opensubtitles.org" style="color:lightgray"> <u> OpenSubtitles.org </u> </a> </div>
+
+<div class="centered" style="width:100%; max-width: 700px; display:inline-block;margin-top:3em;">
+
+<form action="{% url 'wordsinmovies_main:index' %}" method="POST">
+
+  {% csrf_token %}
+
+  <div class="form-row">
+    <div class="form-group col-5">
+      {{ form.lang1.label_tag }}
+      {% render_field form.lang1 class="form-control" %}
+    </div>
+    <div class="form-group col-1">
+      <button type="button" onclick="ToggleLanguages()"; id="toggle_button">
+        &#x21c6;
+      </button>
+    </div>
+    <div class="form-group col-5">
+      {{ form.lang2.label_tag }}
+      {% render_field form.lang2 class="form-control" %}
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-10">
+      {% render_field form.query class="form-control" %}
+    </div>
+    <div class="form-group col-2">
+      <button type="submit" class="btn btn-primary" style="width:100%">Search</button>
+    </div>
+  </div>
+
+
+  <div style="text-align:right;margin-top:-0.8em;">
+    <a href="{% url 'wordsinmovies_main:help' %}"> <u>Help</u> </a>&nbsp
+    <a onclick="ShowExtraOptions()" href="#"> <u>Extra options</u> </a>
+  </div>
+
+<div id="extra_options" style="display:none; border:2px solid #F5F5F5; padding:1em; margin-top:1em;">
+  <div class="form-row">
+    <div class="form-group col-4">
+      {{ form.res_per_page.label_tag }}
+      {% render_field form.res_per_page class="form-control" style="display:inline; width:auto;" %}
+    </div>
+    <!-- <div class="form-group col-3 mx-auto">
+      <div style="float:left; padding-top:0.5em">
+      <span id="sci_mode_label">  {{ form.sci_mode.label_tag }} </span>
+      </div>
+        {% render_field form.sci_mode class="form-control" id="sci_mode" style="display:inline; width:2em;" %}
+    </div> -->
+    <div class="form-group col-4">
+      <div style="float:left; padding-top:0.5em">
+      <span id="pos_tags_label">  {{ form.pos_tags.label_tag }} </span>
+      </div>
+      {% render_field form.pos_tags class="form-control" id="pos_tags" style="display:inline; width:2em;" %}
+    </div>
+  </div>
+</div>
+
+</form>
+
+</div>
+
+
+
+{% if error %}
+<h4 class="mt-5 text-muted" style="text-align:center;font-weight:normal"> {{error_msg}} </h4>
+  <!-- {% elif not excerpts %} -->
+    <!-- <h4 class="mt-5 text-muted" style="text-align:center;font-weight:normal"> Type a word and see how it's used in real life! </h4> -->
+  {% else %}
+    <div class="centered" style="width:100%; max-width:1000px; text-align:left;">
+    Total matches: {{total_found}}
+    </div>
+    <table class="centered" style="width:100%; max-width:1000px;">
+      <col width="50%">
+      <col width="50%">
+      <thead>
+        <tr>
+          <th>{{table_headers.0}}</th>
+          <th>{{table_headers.1}}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for excerpt in excerpts %}
+        <tr>
+          <td>{{ excerpt.0|safe }}</td>
+          <td>{{ excerpt.1|safe }}</td>
+        </tr>
+        <tr >
+          <td colspan="2" style="text-align:center;">
+            {{ excerpt.2|safe }}, <a href="https://www.imdb.com/title/tt{{excerpt.3|safe}}"> IMDB ID: {{excerpt.3|safe}}</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endif %}
+
+<nav class="centered" style="display:inline-block; margin-top:20px;">
+{% if paginator.has_other_pages %}
+  <ul class="pagination">
+    {% if paginator.has_previous %}
+      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&page={{paginator.previous_page_number}}&pos_tags={{pos_tags}}">&laquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span><a class="page-link" href="#">&laquo;</a></span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if paginator.number == i %}
+        <li class="page-item active"><span><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&page={{paginator.number}}&pos_tags={{pos_tags}}">{{ i }}</a><span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&page={{ i }}&pos_tags={{pos_tags}}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if paginator.has_next %}
+      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&page={{paginator.next_page_number}}&pos_tags={{pos_tags}}">&raquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span><a class="page-link" href="#">&raquo;</a></span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</nav>
+
+{% endblock content %}

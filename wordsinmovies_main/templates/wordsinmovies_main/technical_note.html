@@ -1,0 +1,137 @@
+{% extends "wordsinmovies_main/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block extra_css %}
+
+<style>
+
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  td,th {
+    padding-left:1em;
+    padding-right:1em;
+  }
+
+</style>
+
+{% endblock extra_css %}
+
+{% block content %}
+
+<div class="container" style="max-width:800px">
+
+<h5 style="margin-top: 2em;"> Formation of document tables </h5>
+
+<p>
+The archives of monolingual subtitles files were downloaded from the
+<a href="http://opus.nlpl.eu/OpenSubtitles-v2018.php"> OpenSubtitles corpus 2018</a>
+web page. Each archive contained *.xml subtitles files for a large number of movies appeared
+since the advent of cinematography.
+</p>
+
+<p>
+For each pair of languages, special *.xml files containing sentence-to-sentence alignements between
+monolingual subtitles files were also downloaded and analysed. Due to storage and full-text search performance
+limitations, we chose a limited number of movies for the analysis. These movies were selected
+randomly after scanning the whole *.xml alignement file.
+</p>
+
+<p>
+The sentences from the selected movies were
+then groupped by 3, completed with POS tags and stored as records in a database for full-text search.
+Groups where sentences from the two languages did not overlap sufficiently in time (overlap&lt0.7)
+were discarded.
+</p>
+
+<p>
+The following table summarizes databases statistics
+</p>
+
+<table style="margin: 1em;">
+  <tr>
+    <th> Input-Output <br>languages</th>
+    <th> movies <br> in the corpus</th>
+    <th> movies <br> analyzed</th>
+    <th> sentences <br >in the databases</th>
+    <th> words <br >in the databases</th>
+  </tr>
+  <tr>
+    <td> en-ru </td>
+    <td> N_tot </td>
+    <td> N_analyzed </td>
+    <td> N_sent </td>
+    <td> N_words </td>
+  </tr>
+  <tr>
+    <td> en-fr </td>
+    <td> N_tot </td>
+    <td> N_analyzed </td>
+    <td> N_sent </td>
+    <td> N_words </td>
+  </tr>
+  <tr>
+    <td> fr-ru </td>
+    <td> N_tot </td>
+    <td> N_analyzed </td>
+    <td> N_sent </td>
+    <td> N_words </td>
+  </tr>
+</table>
+
+<h5 style="margin-top: 1em;"> POS-tagging </h5>
+
+<p>
+To perform POS-taggig the <a href='https://spacy.io/'>spacy<a> python library was used with the following models
+</p>
+
+  <table style="margin: 1em;">
+    <tr>
+      <th> Language </th>
+      <th> Spacy model </th>
+    </tr>
+    <tr>
+      <td> English </td>
+      <td> en_core_web_sm </td>
+    </tr>
+    <tr>
+      <td> French </td>
+      <td> fr_core_news_sm </td>
+    </tr>
+  </table>
+
+<p>
+POS tags
+were added as postfixes to the existing words, the symbol "_" being used to separate a word from
+its tag. Only the five most useful and most universal (across different languages) types of POS tags were kept:
+"NN" for nouns, "JJ" for adjectives, "VB" for verbs and "RB" for adverbs.
+</p>
+
+<h5 style="margin-top: 1em;"> Full-text search </h5>
+
+<p>
+The WordsInMovies website deploys the <a href='http://sphinxsearch.com/'> sphinx 3.2.1 engine<a> for full-text search.
+</p>
+
+<p>
+Lemmatizer dictionaries provided by <a href='http://sphinxsearch.com/'>sphinx<a> are used
+to accelerate search for the Russian and English languages
+when the search string does not POS tags. For other languages, when <a href='http://sphinxsearch.com/'>sphinx<a>
+does not provide a lemmatizer, or when the
+search string has POS-tags, the search string is first parsed and expanded with other wordforms
+and then sent to the search engine. The resulting search time is therefore increased.
+</p>
+
+
+<h5 style="margin-top: 1em;"> WordsInMovies in the way of improvement </h5>
+
+<p>
+We are constantly working on the improvement of the WordsInMovies website. In particular, we plan to develop a new
+search engine or suggest the necessary functions for <a href='http://sphinxsearch.com/'>sphinx<a>. The new search engine should manage postfixes,
+rapidly process requests like <b>*_JJ car</b> and provide ranking modes useful for lingustics research (for example, show
+the rarest words first). In addition, we will try to parallelize the searcher.
+</p>
+
+{% endblock content %}

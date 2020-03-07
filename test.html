@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  <style>
+
+.custom-select-wrapper {
+     /* position: relative; */
+     user-select: none;
+     width: 100%;
+     max-width:300px;
+
+}
+
+.separator{
+  position:absolute;
+  border-width: 0 0 0 1px;
+  border-style: solid;
+  border-color: #ced4da;
+  right:0;
+  width:44px;
+  height:100%;
+  background-color: white;
+}
+
+ .custom-select {
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     border-width: 0 1px 0 1px;
+     border-style: solid;
+     border-color: #ced4da;
+}
+ .custom-select__trigger {
+     position: relative;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 0 10px;
+     font-size: 20px;
+     /* font-weight: 300; */
+     color: #3b3b3b;
+     height: 40px;
+     line-height: 60px;
+     background: #ffffff;
+     cursor: pointer;
+     border-width: 1px 0px 1px 0;
+     border-style: solid;
+     border-color: #ced4da;
+}
+ .custom-options {
+     position: absolute;
+     display: block;
+     top: 100%;
+     left: 0;
+     right: 0;
+     border: 1px solid #ced4da;
+     border-top: 0;
+     background-color: whitesmoke;
+     transition: all 0.2s;
+     opacity: 0;
+     visibility: hidden;
+     pointer-events: none;
+     z-index: 2;
+}
+ .custom-select.open .custom-options {
+     opacity: 1;
+     visibility: visible;
+     pointer-events: all;
+}
+ .custom-option {
+     position: relative;
+     display: block;
+     padding: 0 10px 0 10px;
+     font-size: 22px;
+     /* font-weight: 300; */
+     color: #3b3b3b;
+     line-height: 60px;
+     cursor: pointer;
+     transition: all 0.2s;
+}
+ .custom-option:hover {
+     cursor: pointer;
+     color: #ffffff;
+     background-color: #4d94ff;
+}
+ /* .custom-option.selected {
+     color: #ffffff;
+     background-color: #4d94ff;
+} */
+
+
+.arrow {
+     position: relative;
+     height: 10px;
+     width: 15px;
+}
+ .arrow::before, .arrow::after {
+     content: "";
+     position: absolute;
+     bottom: 0px;
+     width: 0.15rem;
+     height: 100%;
+     transition: all 0.5s;
+}
+ .arrow::before {
+     left: -3px;
+     transform: rotate(45deg);
+     background-color: gray;
+}
+ .arrow::after {
+     left: 3px;
+     transform: rotate(-45deg);
+     background-color: gray;
+}
+ .open .arrow::before {
+     left: -3px;
+     transform: rotate(-45deg);
+}
+ .open .arrow::after {
+     left: 3px;
+     transform: rotate(45deg);
+}
+
+
+  </style>
+
+
+  </head>
+  <body>
+
+<div class="custom-select-wrapper">
+    <div class="custom-select">
+        <div class="custom-select__trigger"><span>English</span>
+            <div class="separator"> </div>
+            <div class="arrow"></div>
+        </div>
+        <div class="custom-options">
+            <span class="custom-option selected" data-value="tesla">English</span>
+            <span class="custom-option" data-value="volvo">Russian</span>
+            <span class="custom-option" data-value="mercedes">French</span>
+        </div>
+    </div>
+</div>
+
+<script>
+
+  document.querySelector('.custom-select-wrapper').addEventListener('click', function() {
+      this.querySelector('.custom-select').classList.toggle('open');
+  })
+</script>
+<script>
+  for (const option of document.querySelectorAll(".custom-option")) {
+      option.addEventListener('click', function() {
+          if (!this.classList.contains('selected')) {
+              this.parentNode.querySelector('.custom-option.selected').classList.remove('selected');
+              this.classList.add('selected');
+              this.closest('.custom-select').querySelector('.custom-select__trigger span').textContent = this.textContent;
+          }
+      })
+  }
+
+
+</script>
+
+  </body>
+</html>

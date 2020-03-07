@@ -1,0 +1,64 @@
+{% extends "wordsinmovies_main/base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+
+<div class="container" style="max-width:800px">
+
+<h4 style="margin-top: 2em;"> The site </h4>
+
+<p>
+The WordsInMovies website provides a connection beetween the large collection of multilingual
+movie subtitles (<a href="http://opus.nlpl.eu/OpenSubtitles-v2018.php"> OpenSubtitles corpus </a>) and language learners,
+teachers and specialists in linguistics. In the core of the WordsInMovies website is a search function that
+permits to look for a particular word/phrase in context and its translation to a given language. Most of the words are
+labelled with the part-of-speech(POS) tag to enable fine searching.
+</p>
+
+<p>
+The main objective is to show how the translation (and the meaning!) of a given word varies depending on the
+situational context.
+</p>
+
+Language learners, teachers and experts in linguistics can benefit from the WordsInMovies website in a number of ways:
+<ul>
+  <li style="margin-top:1em;"> <u> Language learners</u> can expand their vocabulary knowledge by observing how the target word is used
+    in different situations. Students may find examples from movie subtitles more attractive compared to classbook exercises that
+    sometimes look unrealistic. A translation to the student mother tongue is intended to facilitate the
+    mastery of a given word/phrase on one hand and make the student aware of translation pitfalls on the other hand.
+    The link to the movie imdb page available under each search result will make the activity
+    even more engaging.
+  </li>
+  <li style="margin-top:1em;"> <u> Language teachers</u> can also expand their vocabulary knowledge using this website. In addition, they
+    may use the site to look for sentences examples to use in the classroom.
+  </li>
+  <li style="margin-top:1em;"> <u> Experts in linguistics</u> may mostly be interested in the
+    <a href="{%url 'wordsinmovies_main:wordlists'%}">word frequency lists </a> . They can also use the website
+    as a source of examples for language textbooks.
+  </li>
+</ul>
+
+<p>
+The website <a href="{% url 'wordsinmovies_main:help'%}">
+supports </a> a variety of search options, including POS-based and wildcard-based search.
+Unregistered users can make up to <b>50</b> queries per day, for registered users the number of queries is limited by
+<b>100</b>.
+</p>
+
+
+<h4> The author </h4>
+<img src="{% static 'wordsinmovies_main/img/vvsy.jpg' %}" alt="sergey_vilov" style="width:150px; float:left; margin-right:2em;">
+<p> The WordsInMovies website was entirely created by Sergey Vilov, who analysed large subtitles databases of the
+  <a href="http://opus.nlpl.eu/OpenSubtitles-v2018.php">  OpenSubtitles corpus 2018</a>, performed POS-tagging,
+  implemented full-text search and designed the front-end and back-end of this site.
+</p>
+
+<p style="clear:left; padding-top:2em;">
+<b> I am constantly looking for collaborators on linguistics-related research and the development of the WordsInMovies website.</b>
+<br> Should you be interested, please contact me by e-mail: <a href="#">vilovskimail@gmail.com</a>
+</p>
+
+</div>
+
+{% endblock content %}

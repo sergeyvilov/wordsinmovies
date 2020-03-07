@@ -1,0 +1,131 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>WordsInMovies</title>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+<script src='{% static "wordsinmovies_main/js/jquery-3.4.1.min.js" %}'></script>
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+<link rel="stylesheet" href='{% static "bootstrap-4.3.1-dist/css/bootstrap_cerulean.min.css" %}'>
+<script src='{% static "bootstrap-4.3.1-dist/js/bootstrap.min.js" %}'></script>
+<script src='{% static "wordsinmovies_main/js/jquery-3.4.1.min.js" %}'></script>
+<script src='{% static "wordsinmovies_main/js/popper.min.js" %}'></script>
+<script type="text/javascript" src='{% static "wordsinmovies_main/js/wordsinmovies.js" %}'></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+<style>
+
+  .centered {
+    margin-left:50%;
+    transform: translate(-50%, 0);
+  }
+
+  .nav-link{
+    color:rgba(255,255,255,0.9);
+    font-size:1.1em;
+  }
+/*
+      .make_inline{
+        display:inline;
+        width:auto;
+      }
+
+      .make_inline2{
+        display:inline;
+        width:100%;
+        border:5px solid red;
+      } */
+
+  h3, h4{
+    color:gray;
+  }
+
+</style>
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
+
+</head>
+
+<body>
+
+<div class="bs-component">
+<nav class="navbar navbar-collapse  navbar-dark bg-dark">
+  <a class="nav-item nav-link"   href="{% url 'wordsinmovies_main:index' %}">Home <span class="sr-only">(current)</span></a>
+  <a class="nav-item nav-link mr-auto" href="{% url 'wordsinmovies_main:wordlists' %}">Wordlists</a>
+  <a class="nav-link ml-auto" href="{% url 'wordsinmovies_main:help' %}">Help</a>
+  <a class="nav-link" href="{% url 'wordsinmovies_main:about' %}">About</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarNavAltMarkup" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <!-- <div class="navbar-nav mr-auto"> -->
+      <!-- <a class="nav-item nav-link" href="#">Wordlists</a> -->
+    <!-- </div> -->
+    <div class="navbar-nav ml-auto">
+      <!-- <a class="nav-item nav-link" href="{% url 'wordsinmovies_main:help' %}">Help</a> -->
+      <!-- <a class="nav-item nav-link" href="{% url 'wordsinmovies_main:about' %}">About</a> -->
+      {% if user.is_authenticated %}
+        <!-- Hello, {{ user.username }}. -->
+        <a class="nav-item nav-link" href="{% url 'users:profile' %}">My profile</a>
+        <a class="nav-item nav-link" href="{% url 'users:logout' %}">Log out</a>
+      {% else %}
+        <a class="nav-item nav-link" href="{% url 'users:login' %}">Log in</a>
+        <a class="nav-item nav-link" href="{% url 'users:register' %}">Register-Why register?</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+</div>
+
+{% for message in messages %}
+  <div class="alert {{ message.tags }}" role="alert">
+    <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button> -->
+    {{ message }}
+  </div>
+{% endfor %}
+
+<script>
+
+window.setTimeout(function() {
+  $(".alert").fadeTo(500, 0).slideUp(500, function(){
+  $(this).remove();
+  });
+}, 5000);
+
+</script>
+
+{% if user.is_authenticated %}
+
+<div style='text-align:right;'>
+  <div style="display:inline-block;margin-right:2em;">
+    Hello, {{user.email}}.
+    You have {{user.profile.n_requests}} requests today.
+    {% if not user.profile.n_requests %}
+      You have exceeded your day limit for requests.
+    {% endif %}
+  </div>
+</div>
+
+{% endif %}
+
+{% block content %}
+{% endblock content %}
+
+</body>
+
+</html>

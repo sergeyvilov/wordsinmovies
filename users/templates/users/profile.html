@@ -1,0 +1,49 @@
+{% extends "wordsinmovies_main/base.html" %}
+{% load widget_tweaks %}
+{% load poll_extras %}
+
+{% block extra_css %}
+{{ profile_form.media.css }}
+{% endblock %}
+
+{% block extra_js %}
+{{ profile_form.media.js }}
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+
+<script>
+function ask_and_delete(){
+  var confirmed = confirm('Are you sure to delete your account?');
+  if (confirmed) {
+    window.location.replace("{% url 'users:delete' %}");
+  }
+}
+</script>
+
+<form class="container mt-5" style="display:inline-block; width:100%; max-width:500px;" method="post">
+  <div style="display:inline-block;">
+    {% csrf_token %}
+    {% include 'users/bs4_form.html' with form=user_form%}
+    {% include 'users/bs4_form.html' with form=profile_form%}
+    <button class="btn btn-primary" style="float:left" type="submit" name="save">
+      Save changes
+    </button>
+  </div>
+  <div class="mt-2 text-muted">
+    *We collect this information for statistical purposes only. <br> You can delete
+    your account at any moment.
+  </div>
+</form>
+
+
+
+<div style="position:fixed;text-align:center;bottom:0;left:0;width:100%;">
+  <a href="javascript:ask_and_delete();">delete my account</a>
+</div>
+
+
+{% endblock content %}
