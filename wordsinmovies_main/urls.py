@@ -20,8 +20,6 @@ url(r'^wordlists/', TemplateView.as_view(template_name="wordsinmovies_main/wordl
 
 url(r'^technical_note/', TemplateView.as_view(template_name="wordsinmovies_main/technical_note.html"), name='technical_note'),
 
+# url(r'^server_err/', TemplateView.as_view(template_name="wordsinmovies_main/500.html"), name='server_err'),
 
- # url(r'^search-autocomplete/$', SearchAutocomplete.as_view(),name='search-autocomplete'),
                 ]
-
-#=(?P<query>[\w_-~/\s\,\|\"\!\(\)\[\]\@\<\>]+)
