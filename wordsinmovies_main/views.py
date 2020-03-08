@@ -3,7 +3,7 @@ from .forms import SearchForm
 #from .query_sphinx import QuerySphinx
 from .models import HistoryRecords
 from users.models import IP
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 # from dal import autocomplete
 from math import ceil
@@ -184,3 +184,9 @@ def search(request):
     'query': query, 'total_found':total_found, 'pos_tags':pos_tags}
 
     return render(request, 'wordsinmovies_main/index.html', context)
+
+# def my_test_500_view(request):
+#     return HttpResponse(status=500)
+#
+# def my_test_404_view(request):
+#     return HttpResponse(status=404)

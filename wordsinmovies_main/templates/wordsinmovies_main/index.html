@@ -41,74 +41,56 @@
 
 <script>
 
-  var language_code = {Russian: "ru", English: "en", French: "fr"};
-  var language_map = {English: ["Russian", "French"], Russian: ["English"], French: ["English"]};
+  function set_cosy_selector(widget_name, value, content){
+    document.querySelector('input[name="' + widget_name + '"]').setAttribute('value', value);
+    document.querySelector('.cosy_selector-select__trigger[input_widget="' + widget_name + '"] span').textContent = content;
+  }
 
-  function update_lang2(){
-    var lang1_selector = document.getElementById("first_language");
-    var lang2_selector = document.getElementById("second_language");
-    var lang1 = lang1_selector.options[lang1_selector.selectedIndex].text;
+  function get_cosy_selector(widget_name){
+    const value = document.querySelector('input[name="' + widget_name + '"]').getAttribute('value');
+    return value
+  }
 
-    lang2_selector.options.length = 0;
-
-    for (i=0; i<language_map[lang1].length; i++){
-      lang2_selector.options[i] = new Option(language_map[lang1][i], language_code[language_map[lang1][i]])
+  function choose_cosy_selector_options(widget_name, options){
+    for (const option of document.querySelectorAll('.cosy_selector-option[input_widget="' + widget_name + '"]')) {
+      if (options.includes(option.getAttribute("value"))){
+        option.style.display="block";
+      }
+      else {
+        option.style.display="none";
+      }
     }
   }
 
+  const language_code = {ru: "Russian", en: "English", fr: "French"};
+  const language_map = {en: ["ru", "fr"], ru: ["en"], fr: ["en"]};
+
   function ToggleLanguages(){
 
-    var lang1_selector = document.getElementById("first_language");
-    var lang2_selector = document.getElementById("second_language");
-    var lang1 = lang1_selector.options[lang1_selector.selectedIndex].text;
-    var lang2 = lang2_selector.options[lang2_selector.selectedIndex].text;
+    const lang1 = get_cosy_selector("lang1");
+    const lang2 = get_cosy_selector("lang2");
 
     if (language_map[lang2].includes(lang1)) {
-      lang1_selector.value=language_code[lang2];
-      update_lang2();
-      lang2_selector.value=language_code[lang1];
+      set_cosy_selector("lang1", lang2, language_code[lang2]);
+      choose_cosy_selector_options("lang2", language_map[lang2]);
+      set_cosy_selector("lang2", lang1, language_code[lang1]);
     }
-
   }
 
   window.onload = function() {
 
-    // update_lang2();
+      choose_cosy_selector_options("lang2", language_map[get_cosy_selector("lang1")]);
 
-    // if ('{{languages.1}}'!='') {
-    //   document.getElementById("second_language").value = '{{languages.1}}'
-    // }
+      for (const option of document.querySelectorAll('.cosy_selector-option[input_widget="lang1"]'))
+      {
+        option.onclick = function(){
+          choose_cosy_selector_options("lang2", language_map[option.getAttribute("value")]);
+          const first_choice = language_map[option.getAttribute("value")][0];
+          set_cosy_selector("lang2", first_choice, language_code[first_choice] );
+          set_cosy_selector("lang1", option.getAttribute("value"), option.textContent );
 
-      document.getElementById('first_language').onchange = update_lang2;
-
-    //   var user_auth = "{{user.is_authenticated}}"
-    //   var sci_mode_requests = "{{user.profile.sci_mode_requests}}"
-    //
-    //   if (user_auth == "False" || sci_mode_requests == "0") {
-    //
-    //   document.getElementById('sci_mode_label').classList.add("text-muted");
-    //   document.getElementById('sci_mode').disabled = true;
-    //   document.getElementById('sci_mode').checked == false;
-    //   }
-    //   else {
-    //   document.getElementById('sci_mode_label').classList.remove("text-muted");
-    //   document.getElementById('sci_mode').disabled = false;
-    //   }
-    //
-    //   function ChangePOStagsState() {
-    //   if (document.getElementById('sci_mode').checked == false)
-    //       {
-    //     document.getElementById('pos_tags_label').classList.add("text-muted");
-    //     document.getElementById('pos_tags').disabled = true;
-    //   }
-    //   else {
-    //     document.getElementById('pos_tags_label').classList.remove("text-muted");
-    //     document.getElementById('pos_tags').disabled = false;
-    //   }
-    // };
-    //
-    //   ChangePOStagsState();
-    //   document.getElementById("sci_mode").addEventListener("click", ChangePOStagsState);
+        };
+      }
 
   };
 
@@ -140,16 +122,20 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
   <div class="form-row">
     <div class="form-group col-5">
       {{ form.lang1.label_tag }}
-      {% render_field form.lang1 class="form-control" %}
+      <div style="height:2.5rem;">
+        {% render_field form.lang1 class="form-control" id="first_language"%}
+      </div>
     </div>
     <div class="form-group col-1">
-      <button type="button" onclick="ToggleLanguages()"; id="toggle_button">
+      <button type="button" onclick="ToggleLanguages()"; id="toggle_button"  style="height:2.5rem;">
         &#x21c6;
       </button>
     </div>
     <div class="form-group col-5">
       {{ form.lang2.label_tag }}
-      {% render_field form.lang2 class="form-control" %}
+      <div style="height:2.5rem;">
+        {% render_field form.lang2 class="form-control" id="second_language" %}
+      </div>
     </div>
   </div>
   <div class="form-row">
@@ -169,9 +155,13 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
 
 <div id="extra_options" style="display:none; border:2px solid #F5F5F5; padding:1em; margin-top:1em;">
   <div class="form-row">
-    <div class="form-group col-4">
-      {{ form.res_per_page.label_tag }}
-      {% render_field form.res_per_page class="form-control" style="display:inline; width:auto;" %}
+    <div class="form-group col-5">
+      <div style="float:left;margin-right:1em;position:relative;top:0.1rem">
+          {{ form.res_per_page.label_tag }}
+      </div>
+      <div style="height:2rem">
+        {% render_field form.res_per_page  class="form-control" %}
+      </div>
     </div>
     <!-- <div class="form-group col-3 mx-auto">
       <div style="float:left; padding-top:0.5em">
@@ -179,11 +169,9 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
       </div>
         {% render_field form.sci_mode class="form-control" id="sci_mode" style="display:inline; width:2em;" %}
     </div> -->
-    <div class="form-group col-4">
-      <div style="float:left; padding-top:0.5em">
-      <span id="pos_tags_label">  {{ form.pos_tags.label_tag }} </span>
-      </div>
-      {% render_field form.pos_tags class="form-control" id="pos_tags" style="display:inline; width:2em;" %}
+    <div class="form-group col-5">
+      <div style="float:left;margin-right:0.5em;position:relative;top:0.1rem">{{ form.pos_tags.label_tag }}</div>
+      {% render_field form.pos_tags class="form-control" style="width:2em;position:relative;bottom:0.25em" %}
     </div>
   </div>
 </div>
@@ -196,13 +184,12 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
 
 {% if error %}
 <h4 class="mt-5 text-muted" style="text-align:center;font-weight:normal"> {{error_msg}} </h4>
-  <!-- {% elif not excerpts %} -->
-    <!-- <h4 class="mt-5 text-muted" style="text-align:center;font-weight:normal"> Type a word and see how it's used in real life! </h4> -->
+  {% elif not excerpts %}
   {% else %}
     <div class="centered" style="width:100%; max-width:1000px; text-align:left;">
     Total matches: {{total_found}}
     </div>
-    <table class="centered" style="width:100%; max-width:1000px;">
+    <table class="centered" style="width:100%; max-width:1000px;z-index:-1;">
       <col width="50%">
       <col width="50%">
       <thead>
