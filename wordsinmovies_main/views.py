@@ -181,7 +181,7 @@ def search(request):
 
     context = {'form': form, 'error':0, 'excerpts': matches, 'paginator': paginator,
     'languages': [lang1, lang2],'table_headers': [language_code[lang1], language_code[lang2]],
-    'query': query, 'total_found':total_found, 'pos_tags':pos_tags}
+    'query': query, 'total_found':total_found, 'pos_tags':pos_tags,  'res_per_page':res_per_page}
 
     return render(request, 'wordsinmovies_main/index.html', context)
 

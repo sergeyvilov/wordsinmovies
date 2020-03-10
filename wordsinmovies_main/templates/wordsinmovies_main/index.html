@@ -1,5 +1,6 @@
 {% extends "wordsinmovies_main/base.html" %}
 {% load widget_tweaks %}
+{% load static %}
 
 {% block extra_css %}
 
@@ -35,9 +36,14 @@
   }
 
 </style>
+
+<link rel="stylesheet" href='{% static "wordsinmovies_main/css/cosy_selector.css" %}'>
+
 {% endblock extra_css %}
 
 {% block extra_js %}
+
+<script src='{% static "wordsinmovies_main/js/cosy_selector.js" %}'></script>
 
 <script>
 
@@ -78,6 +84,8 @@
   }
 
   window.onload = function() {
+
+      init_cosy_selectors();
 
       choose_cosy_selector_options("lang2", language_map[get_cosy_selector("lang1")]);
 
@@ -122,9 +130,7 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
   <div class="form-row">
     <div class="form-group col-5">
       {{ form.lang1.label_tag }}
-      <div style="height:2.5rem;">
         {% render_field form.lang1 class="form-control" id="first_language"%}
-      </div>
     </div>
     <div class="form-group col-1">
       <button type="button" onclick="ToggleLanguages()"; id="toggle_button"  style="height:2.5rem;">
@@ -133,9 +139,7 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
     </div>
     <div class="form-group col-5">
       {{ form.lang2.label_tag }}
-      <div style="height:2.5rem;">
         {% render_field form.lang2 class="form-control" id="second_language" %}
-      </div>
     </div>
   </div>
   <div class="form-row">
@@ -170,8 +174,8 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
         {% render_field form.sci_mode class="form-control" id="sci_mode" style="display:inline; width:2em;" %}
     </div> -->
     <div class="form-group col-5">
-      <div style="float:left;margin-right:0.5em;position:relative;top:0.1rem">{{ form.pos_tags.label_tag }}</div>
-      {% render_field form.pos_tags class="form-control" style="width:2em;position:relative;bottom:0.25em" %}
+      <div style="float:left;position:relative;top:0.1em;">{{ form.pos_tags.label_tag }}</div>
+        {% render_field form.pos_tags class="form-control" style="position:relative;bottom:0.25em;width:2rem;float:left;margin-left:0.5em;" %}
     </div>
   </div>
 </div>
@@ -189,7 +193,7 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
     <div class="centered" style="width:100%; max-width:1000px; text-align:left;">
     Total matches: {{total_found}}
     </div>
-    <table class="centered" style="width:100%; max-width:1000px;z-index:-1;">
+    <table  class="centered" style="width:100%; max-width:1000px; position:relative; z-index:-1;">
       <col width="50%">
       <col width="50%">
       <thead>
@@ -218,19 +222,19 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
 {% if paginator.has_other_pages %}
   <ul class="pagination">
     {% if paginator.has_previous %}
-      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&page={{paginator.previous_page_number}}&pos_tags={{pos_tags}}">&laquo;</a></li>
+      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator.previous_page_number}}&pos_tags={{pos_tags}}">&laquo;</a></li>
     {% else %}
       <li class="page-item disabled"><span><a class="page-link" href="#">&laquo;</a></span></li>
     {% endif %}
     {% for i in paginator.page_range %}
       {% if paginator.number == i %}
-        <li class="page-item active"><span><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&page={{paginator.number}}&pos_tags={{pos_tags}}">{{ i }}</a><span class="sr-only">(current)</span></span></li>
+        <li class="page-item active"><span><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator.number}}&pos_tags={{pos_tags}}">{{ i }}</a><span class="sr-only">(current)</span></span></li>
       {% else %}
-        <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&page={{ i }}&pos_tags={{pos_tags}}">{{ i }}</a></li>
+        <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{ i }}&pos_tags={{pos_tags}}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
     {% if paginator.has_next %}
-      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&page={{paginator.next_page_number}}&pos_tags={{pos_tags}}">&raquo;</a></li>
+      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator.next_page_number}}&pos_tags={{pos_tags}}">&raquo;</a></li>
     {% else %}
       <li class="page-item disabled"><span><a class="page-link" href="#">&raquo;</a></span></li>
     {% endif %}
