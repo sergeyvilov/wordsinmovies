@@ -2,8 +2,19 @@
 {% load widget_tweaks %}
 {% load static %}
 
+{% block extra_css %}
+<style>
+body{
+  position:static;
+  z-index:0;
+}
+</style>
+{% endblock %}
+
+
 {% block content %}
-<div class="centered" style="position:absolute;width:100%;max-width:800px;height:100%;">
+
+<div class="centered" style="position:absolute;width:800px;height:100%;">
    <h1 style="position:relative;top:30%;text-align:center;">There has been an internal error (500)</h1>
 </div>
 {% endblock content %}
