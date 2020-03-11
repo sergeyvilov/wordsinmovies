@@ -26,25 +26,25 @@ function ask_and_delete(){
 
 <div class="container">
 
-<form class="mt-5" style="display:inline-block; width:100%; max-width:500px;" method="post">
-  <div style="display:inline-block;">
-    {% csrf_token %}
-    {% include 'users/bs4_form.html' with form=user_form%}
-    {% include 'users/bs4_form.html' with form=profile_form%}
-    <button class="btn btn-primary" style="float:left" type="submit" name="save">
-      Save changes
-    </button>
-  </div>
-  <div class="mt-2 text-muted mb-5">
-    *We collect this information for statistical purposes only. <br> You can delete
-    your account at any moment.
-  </div>
-</form>
+  <form class="mt-5" style="display:inline-block; width:100%; max-width:500px;" method="post">
+    <div style="display:inline-block;">
+      {% csrf_token %}
+      {% include 'users/bs4_form.html' with form=user_form%}
+      {% include 'users/bs4_form.html' with form=profile_form%}
+      <button class="btn btn-primary" style="float:left" type="submit" name="save">
+        Save changes
+      </button>
+    </div>
+    <div class="mt-2 text-muted mb-5">
+      *We collect this information for statistical purposes only. <br> You can delete
+      your account at any moment.
+    </div>
+  </form>
 
 
-<div style="width:100%;text-align:center;height:100%">
-  <a href="javascript:ask_and_delete();">delete my account</a>
-</div>
+  <div style="width:100%;text-align:center;height:100%">
+    <a href="javascript:ask_and_delete();">delete my account</a>
+  </div>
 
 </div>
 
