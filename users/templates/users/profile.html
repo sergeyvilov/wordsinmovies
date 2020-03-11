@@ -24,7 +24,9 @@ function ask_and_delete(){
 }
 </script>
 
-<form class="container mt-5" style="display:inline-block; width:100%; max-width:500px;" method="post">
+<div class="container">
+
+<form class="mt-5" style="display:inline-block; width:100%; max-width:500px;" method="post">
   <div style="display:inline-block;">
     {% csrf_token %}
     {% include 'users/bs4_form.html' with form=user_form%}
@@ -33,17 +35,17 @@ function ask_and_delete(){
       Save changes
     </button>
   </div>
-  <div class="mt-2 text-muted">
+  <div class="mt-2 text-muted mb-5">
     *We collect this information for statistical purposes only. <br> You can delete
     your account at any moment.
   </div>
 </form>
 
 
-
-<div style="position:fixed;text-align:center;bottom:0;left:0;width:100%;">
+<div style="width:100%;text-align:center;height:100%">
   <a href="javascript:ask_and_delete();">delete my account</a>
 </div>
 
+</div>
 
 {% endblock content %}

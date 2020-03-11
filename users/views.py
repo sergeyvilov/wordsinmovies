@@ -113,8 +113,9 @@ def forgot_my_pswd(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         if user_form.is_valid():
-                user = User.objects.filter(email=user_form.cleaned_data.get('email'))[0]
+                user = User.objects.filter(email=user_form.cleaned_data.get('email'))
                 if user:
+                    user = user[0]
                     current_site = get_current_site(request)
                     mail_subject = 'Reset your WordsInMovies password'
                     message = render_to_string('users/reset_pswd_email.html', {

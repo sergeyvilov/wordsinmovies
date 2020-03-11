@@ -3,7 +3,8 @@
 
 {% block content %}
 
-<form method="post" style="width:100%; max-width:500px;" action="{% url 'users:login' %}" class="mt-5 centered">
+<div class="container">
+<form method="post" style="width:100%; max-width:500px;" action="{% url 'users:login' %}" class="mt-5 mx-auto">
   {% csrf_token %}
 
   {% if form.non_field_errors %}
@@ -54,6 +55,6 @@
   <button type="submit" class="btn btn-primary" style="float:left">Log in</button>
   <input type="hidden" name="next" value="{% url 'users:logged_in' %}" />
 </form>
-
+</div>
 
 {% endblock content %}

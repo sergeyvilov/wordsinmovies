@@ -18,13 +18,23 @@
 
   #toggle_button{
     position: absolute;
-    bottom: 0em;
-    width: 50px;
-    height: 55%;
+    bottom:0rem;
+    height:2.5rem;
+    width:100%;
+    /* max-width:305px; */
+    /* min-width:60px; */
+    /* margin-top: 2.5rem; */
+    /* margin-left:auto; */
     font-size: 25px;
     border: 1px solid #ced4da;
     border-radius: 5px;
     background-color: #FFFF;
+  }
+
+  @media (max-width: 575px) {
+    .toggle_button_column{
+      height: 2.5rem;
+    }
   }
 
   #title{
@@ -99,7 +109,6 @@
 
         };
       }
-
   };
 
   function ShowExtraOptions(){
@@ -121,38 +130,41 @@
 <div style="text-align:center; margin-top:2em; color:lightgray;">Learn how words are used in spoken language based on
 the free movie subtitles database <a href="https://www.opensubtitles.org" style="color:lightgray"> <u> OpenSubtitles.org </u> </a> </div>
 
-<div class="mx-auto" style="width:700px; margin-top:3em;">
+<div class="container" style="max-width:768px; min-width:300px; margin-top:3em;">
 
 <form action="{% url 'wordsinmovies_main:index' %}" method="POST">
 
   {% csrf_token %}
 
-  <div class="form-row">
-    <div class="form-group col-5">
+  <div class="form-row px-0">
+    <div class="form-group col-12  col-sm-5 pl-1 pr-1" >
       {{ form.lang1.label_tag }}
         {% render_field form.lang1 class="form-control" id="first_language"%}
     </div>
-    <div class="form-group col-1">
-      <button type="button" onclick="ToggleLanguages()"; id="toggle_button"  style="height:2.5rem;">
+    <div class="w-100 d-block d-sm-none"></div>
+    <div class="form-group col-2 col-sm-1 offset-5 offset-sm-0 px-0 toggle_button_column" >
+      <button type="button" onclick="ToggleLanguages()" id="toggle_button">
         &#x21c6;
       </button>
     </div>
-    <div class="form-group col-5">
+    <div class="w-100 d-block d-sm-none"></div>
+    <div class="form-group col-12  col-sm-5 pr-1 pl-1" >
       {{ form.lang2.label_tag }}
         {% render_field form.lang2 class="form-control" id="second_language" %}
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-10">
+    <div class="form-group col-12 col-sm-10">
       {% render_field form.query class="form-control" %}
     </div>
+    <div class="w-100 d-block d-sm-none"></div>
     <div class="form-group col-2">
-      <button type="submit" class="btn btn-primary" style="width:100%">Search</button>
+      <button type="submit" class="btn btn-primary" style="width:100%;min-width:100px;">Search</button>
     </div>
   </div>
 
 
-  <div style="text-align:right;margin-top:-0.8em;">
+  <div style="text-align:right;margin-top:-0.8rem;">
     <a href="{% url 'wordsinmovies_main:help' %}"> <u>Help</u> </a>&nbsp
     <a onclick="ShowExtraOptions()" href="#"> <u>Extra options</u> </a>
   </div>
@@ -185,15 +197,15 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
 </div>
 
 
-
+<div class="container" style="max-width:1000px;">
 {% if error %}
 <h4 class="mt-5 text-muted" style="text-align:center;font-weight:normal"> {{error_msg}} </h4>
   {% elif not excerpts %}
   {% else %}
-    <div class="centered" style="width:100%; max-width:1000px; text-align:left;">
+    <div style="text-align:left;">
     Total matches: {{total_found}}
     </div>
-    <table  class="centered" style="width:100%; max-width:1000px; position:relative; z-index:-1;">
+    <table style="position:relative; z-index:-1;">
       <col width="50%">
       <col width="50%">
       <thead>
@@ -218,7 +230,8 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
     </table>
 {% endif %}
 
-<nav class="centered" style="display:inline-block; margin-top:20px;">
+
+<nav class="d-flex justify-content-center" style="display:inline-block; margin-top:20px;">
 {% if paginator.has_other_pages %}
   <ul class="pagination">
     {% if paginator.has_previous %}
@@ -228,7 +241,7 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
     {% endif %}
     {% for i in paginator.page_range %}
       {% if paginator.number == i %}
-        <li class="page-item active"><span><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator.number}}&pos_tags={{pos_tags}}">{{ i }}</a><span class="sr-only">(current)</span></span></li>
+        <li class="page-item active"><span><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator.number}}&pos_tags={{pos_tags}}">{{ i }}</a><span class="sr-only"></span></span></li>
       {% else %}
         <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{ i }}&pos_tags={{pos_tags}}">{{ i }}</a></li>
       {% endif %}
@@ -241,5 +254,7 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
   </ul>
 {% endif %}
 </nav>
+
+</div>
 
 {% endblock content %}
