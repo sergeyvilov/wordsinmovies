@@ -46,7 +46,7 @@ def check_ip(request):
 class Paginator():
     def __init__(self, has_other_pages = 0,
     has_previous = 0, previous_page_number = None, page_range = list(),
-    number = 0, has_next = 0, next_page_number = 0 ):
+    number = 0, has_next = 0, next_page_number = 0):
         self.has_other_pages = has_other_pages
         self.has_previous = has_previous
         self.previous_page_number = previous_page_number
@@ -166,7 +166,7 @@ def search(request):
     #starting page in the paginator
     min_page = ((page-1)//10)*10+1
 
-    paginator = Paginator(  has_other_pages = (total_found > 0),
+    paginator_large = Paginator(  has_other_pages = (total_found > res_per_page),
                             #has_previous = (page > 1),
                             #previous_page_number = max(page - 1, 1),
                             has_previous = (page > 10),
@@ -176,11 +176,22 @@ def search(request):
                             #has_next = (page < total_pages),
                             #next_page_number = min(page + 1, total_pages)
                             has_next = ((total_pages - min_page)>= 10),
-                            next_page_number = min_page + 10,
+                            next_page_number = min(min_page + 10, total_pages),
                             )
 
-    context = {'form': form, 'error':0, 'excerpts': matches, 'paginator': paginator,
-    'languages': [lang1, lang2],'table_headers': [language_code[lang1], language_code[lang2]],
+    min_page = ((page-1)//3)*3+1
+
+    paginator_small = Paginator(  has_other_pages = (total_found > res_per_page),
+                            has_previous = (page > 3),
+                            previous_page_number = max(min_page - 1, 1),
+                            page_range = range(min_page, min(min_page+3, total_pages+1)),
+                            number = page,
+                            has_next = ((total_pages - min_page)>= 3),
+                            next_page_number = min(min_page + 3, total_pages),
+                            )
+
+    context = {'form': form, 'error':0, 'excerpts': matches, 'paginator_large': paginator_large,
+    'paginator_small': paginator_small,'languages': [lang1, lang2],'table_headers': [language_code[lang1], language_code[lang2]],
     'query': query, 'total_found':total_found, 'pos_tags':pos_tags,  'res_per_page':res_per_page}
 
     return render(request, 'wordsinmovies_main/index.html', context)

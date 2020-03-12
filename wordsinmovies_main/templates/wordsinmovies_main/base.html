@@ -32,17 +32,6 @@
     color:rgba(255,255,255,0.9);
     font-size:1.1em;
   }
-/*
-      .make_inline{
-        display:inline;
-        width:auto;
-      }
-
-      .make_inline2{
-        display:inline;
-        width:100%;
-        border:5px solid red;
-      } */
 
   h3, h4{
     color:gray;
@@ -114,9 +103,6 @@
 
 {% for message in messages %}
   <div class="alert {{ message.tags }}" role="alert">
-    <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button> -->
     {{ message }}
   </div>
 {% endfor %}

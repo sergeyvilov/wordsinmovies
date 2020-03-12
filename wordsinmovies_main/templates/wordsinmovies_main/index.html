@@ -57,6 +57,19 @@
 
 <script>
 
+  function reduce_paginator(xs_breakpoint){
+
+    if (xs_breakpoint.matches)
+    {
+      document.getElementById('paginator-large').style.display = 'none';
+      document.getElementById('paginator-small').style.display = 'block';
+    }
+    else{
+      document.getElementById('paginator-large').style.display = 'block';
+      document.getElementById('paginator-small').style.display = 'none';
+    }
+  }
+
   function set_cosy_selector(widget_name, value, content){
     document.querySelector('input[name="' + widget_name + '"]').setAttribute('value', value);
     document.querySelector('.cosy_selector-select__trigger[input_widget="' + widget_name + '"] span').textContent = content;
@@ -109,6 +122,10 @@
 
         };
       }
+
+      var xs_breakpoint = window.matchMedia("(max-width: 400px)");
+      reduce_paginator(xs_breakpoint);
+      xs_breakpoint.addListener(reduce_paginator);
   };
 
   function ShowExtraOptions(){
@@ -119,6 +136,7 @@
       content.style.display = "block";
     }
   }
+
 
 </script>
 
@@ -224,30 +242,58 @@ the free movie subtitles database <a href="https://www.opensubtitles.org" style=
     </table>
 {% endif %}
 
+<nav  class="d-flex justify-content-center" style="display:inline-block; margin-top:20px;">
 
-<nav class="d-flex justify-content-center" style="display:inline-block; margin-top:20px;">
-{% if paginator.has_other_pages %}
+<div id="paginator-small">
+{% if paginator_small.has_other_pages %}
   <ul class="pagination">
-    {% if paginator.has_previous %}
-      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator.previous_page_number}}&pos_tags={{pos_tags}}">&laquo;</a></li>
+    {% if paginator_small.has_previous %}
+      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator_small.previous_page_number}}&pos_tags={{pos_tags}}">&laquo;</a></li>
     {% else %}
       <li class="page-item disabled"><span><a class="page-link" href="#">&laquo;</a></span></li>
     {% endif %}
-    {% for i in paginator.page_range %}
-      {% if paginator.number == i %}
-        <li class="page-item active"><span><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator.number}}&pos_tags={{pos_tags}}">{{ i }}</a><span class="sr-only"></span></span></li>
+    {% for i in paginator_small.page_range %}
+      {% if paginator_small.number == i %}
+        <li class="page-item active"><span><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator_small.number}}&pos_tags={{pos_tags}}">{{ i }}</a><span class="sr-only"></span></span></li>
       {% else %}
         <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{ i }}&pos_tags={{pos_tags}}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
-    {% if paginator.has_next %}
-      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator.next_page_number}}&pos_tags={{pos_tags}}">&raquo;</a></li>
+    {% if paginator_small.has_next %}
+      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator_small.next_page_number}}&pos_tags={{pos_tags}}">&raquo;</a></li>
     {% else %}
       <li class="page-item disabled"><span><a class="page-link" href="#">&raquo;</a></span></li>
     {% endif %}
   </ul>
 {% endif %}
+</div>
+
+<div id="paginator-large">
+{% if paginator_large.has_other_pages %}
+  <ul class="pagination">
+    {% if paginator_large.has_previous %}
+      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator_large.previous_page_number}}&pos_tags={{pos_tags}}">&laquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span><a class="page-link" href="#">&laquo;</a></span></li>
+    {% endif %}
+    {% for i in paginator_large.page_range %}
+      {% if paginator_large.number == i %}
+        <li class="page-item active"><span><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator_large.number}}&pos_tags={{pos_tags}}">{{ i }}</a><span class="sr-only"></span></span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{ i }}&pos_tags={{pos_tags}}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if paginator_large.has_next %}
+      <li class="page-item"><a class="page-link" href="?q={{query}}&lang1={{languages.0}}&lang2={{languages.1}}&num={{res_per_page}}&page={{paginator_large.next_page_number}}&pos_tags={{pos_tags}}">&raquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span><a class="page-link" href="#">&raquo;</a></span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+
 </nav>
+
 
 </div>
 
