@@ -136,15 +136,9 @@ STATICFILES_DIRS = (
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
 # My settings
 LOGIN_URL = '/users/login/'
 
-# Settings for django-bootstrap3
-# BOOTSTRAP3 = {
-#     'include_jquery': True,
-#     }
-#email registration
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
