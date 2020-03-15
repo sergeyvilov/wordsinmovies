@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -27,7 +28,7 @@ def logged_in(request):
     last_connection = request.user.profile.last_connection
     #last_connection=str(last_connection)
     #if previous query quota was set more than 24 hours ago, renew the quota
-    if 1:# last_connection <= timezone.now() - timedelta(days=1):
+    if last_connection <= timezone.now() - timedelta(days=1):
         request.user.profile.n_requests = 100
         request.user.profile.last_connection = timezone.now()
         request.user.profile.save()
@@ -57,7 +58,7 @@ def register(request):
             })
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(
-                        mail_subject, message, to=[to_email]
+                        mail_subject, message,  settings.EMAIL_HOST_USER, to=[to_email],
             )
             email.send()
             messages.warning(request, 'Please check your email to complete the registration.')

@@ -37,12 +37,7 @@ def QuerySphinx(sphinx_client, mydb, mycursor, query, fst_lang, scd_lang, offset
     #if language is Russian, no POS tags are possible, don't parse the query and use the Sphinx lemmatizer
     #if language is English and  POS tags are not requested, don't parse the query and use the Sphinx lemmatizer
     #otherwise, parse the query (add wordforms for each word) and send it to Sphinx for search
-    if fst_lang == "ru":
-
-        index = (sentence_table+'_{}_clean').format(fst_lang)
-        sentence1_column = 'sentence_{}'.format(fst_lang)
-
-    elif fst_lang == "en" and not (query.count('_') or pos_tags):
+    if fst_lang in ("en", "ru") and not (query.count('_') or pos_tags):
 
         index = (sentence_table+'_{}_clean').format(fst_lang)
         sentence1_column = 'sentence_{}_clean'.format(fst_lang)
@@ -55,8 +50,7 @@ def QuerySphinx(sphinx_client, mydb, mycursor, query, fst_lang, scd_lang, offset
         index = (sentence_table+'_{}').format(fst_lang)
         sentence1_column = 'sentence_{}'.format(fst_lang)
 
-
-    if  not pos_tags and not scd_lang == "ru":
+    if  not pos_tags or scd_lang == "ru":
         sentence2_column = 'sentence_{}_clean'.format(scd_lang)
     else:
         sentence2_column = 'sentence_{}'.format(scd_lang)

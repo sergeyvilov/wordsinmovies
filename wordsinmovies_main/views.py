@@ -196,8 +196,13 @@ def search(request):
 
     return render(request, 'wordsinmovies_main/index.html', context)
 
-# def my_test_500_view(request):
-#     return HttpResponse(status=500)
-#
-# def my_test_404_view(request):
-#     return HttpResponse(status=404)
+def handler404(request, *args, **argv):
+    response = render(request, 'wordsinmovies_main/404.html')
+    response.status_code = 404
+    return response
+
+
+def handler500(request, *args, **argv):
+    response = render(request, 'wordsinmovies_main/500.html')
+    response.status_code = 500
+    return response

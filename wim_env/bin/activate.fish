@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/sergey_vilov/WORDS/words_db/wordsinmovies/wim_env"
+set -gx VIRTUAL_ENV "/Users/sergey_vilov/WORDS/wordsinmovies_website/wordsinmovies/wim_env_2"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
@@ -52,8 +52,8 @@ if test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
         set -l old_status $status
 
         # Prompt override?
-        if test -n "(wim_env) "
-            printf "%s%s" "(wim_env) " (set_color normal)
+        if test -n "(wim_env_2) "
+            printf "%s%s" "(wim_env_2) " (set_color normal)
         else
             # ...Otherwise, prepend env
             set -l _checkbase (basename "$VIRTUAL_ENV")

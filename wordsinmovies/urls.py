@@ -15,10 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+# from django.contrib.staticfiles.storage import staticfiles_storage
+# from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'', include('wordsinmovies_main.urls')),
     path(r'', include('users.urls')),
-    #url(r'^autocomplete/', include('autocomplete_light.urls')),
+    # path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'))),
 ]
+
+handler404 = 'wordsinmovies_main.views.handler404'
+handler500 = 'wordsinmovies_main.views.handler500'

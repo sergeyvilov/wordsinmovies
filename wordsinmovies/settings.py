@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'wordsinmovies_main',
     'users',
     #3rd party
-    'bootstrap3',
     'widget_tweaks',
     'ipware',#detects user's ip address
     #'autocomplete_light',
@@ -141,10 +140,12 @@ LOGIN_URL = '/users/login/'
 
 
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL=False
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'wordsinmoviesreg@gmail.com'
 EMAIL_HOST_PASSWORD = 'keith550'
 EMAIL_PORT = 587
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
@@ -154,3 +155,7 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+MYSQLDB = "movies"
+MYSQLUSER = "root"
+MYSQLPASSWD = "Q:)T69pw"
