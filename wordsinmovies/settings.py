@@ -144,8 +144,16 @@ EMAIL_USE_SSL=False
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'wordsinmoviesreg@gmail.com'
 EMAIL_HOST_PASSWORD = 'keith550'
+EMAIL_FROM_ADDRESS = 'wordsinmoviesreg@gmail.com'
 EMAIL_PORT = 587
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# EMAIL_HOST = 'smtp.webfaction.com'
+# EMAIL_HOST_USER = 'wordsinmovies'
+# EMAIL_HOST_PASSWORD = 'keith550'
+# EMAIL_PORT = 587
+# EMAIL_FROM_ADDRESS = 'admin@wordsinmovies.sergeyvilov.webfactional.com'
 
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {

@@ -58,7 +58,7 @@ def register(request):
             })
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(
-                        mail_subject, message,  settings.EMAIL_HOST_USER, to=[to_email],
+                        mail_subject, message,  settings.EMAIL_FROM_ADDRESS, to=[to_email],
             )
             email.send()
             messages.warning(request, 'Please check your email to complete the registration.')
