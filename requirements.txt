@@ -2,7 +2,7 @@ asgiref==3.2.5
 Django==3.0.4
 django-countries==6.0
 django-ipware==2.1.0
-django-widget-tweaks==1.4.6
+django-widget-tweaks==1.4.8
 mysql-connector==2.2.9
 pytz==2019.3
 six==1.14.0

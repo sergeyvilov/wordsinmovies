@@ -19,4 +19,6 @@ class Command(BaseCommand):
 
         old_users.delete()
         old_ips.delete()
+        
+        print(str(datetime.now()))
         print('Successfully deleted all {} old users and {} old IPs'.format(N_old_Users, N_old_IPs))
