@@ -1,4 +1,4 @@
-#!/Users/sergey_vilov/WORDS/wordsinmovies_website/wordsinmovies/wim_env_2/bin/python3
+#!/Users/sergey_vilov/WORDS/wordsinmovies_website/wordsinmovies/wim_env/bin/python3.7
 from django.core import management
 
 if __name__ == "__main__":

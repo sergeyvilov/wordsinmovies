@@ -15,7 +15,8 @@ from datetime import timedelta
 from django.utils import timezone
 import re
 
-sphinx_client, mydb, mydbcursor = MakeConnections()
+global sphinx_client, mydb, mydbcursor
+#sphinx_client, mydb, mydbcursor = MakeConnections()
 language_code = {"en":"English", "ru":"Russian", "fr":"French"}
 blank_search_form = {'query':'', 'lang1':"en", 'lang2':"ru",
     'res_per_page':25, 'pos_tags':False}
@@ -98,6 +99,8 @@ def index(request):
 
 def search(request):
 
+    global sphinx_client, mydb, mydbcursor
+
     query = request.GET.get('q','')
     lang1 = request.GET.get('lang1','en')
     lang2 = request.GET.get('lang2','ru')
@@ -106,7 +109,7 @@ def search(request):
 
     if (not re.search('^[a-z]{2}$', lang1) or not re.search('^[a-z]{2}$', lang2)
         or not re.search('^[0-9]{1,10}$', page) or not re.search('^[0-9]{2,3}$', res_per_page)
-        or not re.search('^[_\w\s\d\"\~\*\|\,\<=]{1,100}$', query)):
+        or not re.search('^[_\w\s\d\"\~\*\|\,\<=\?\!]{1,100}$', query)):
             return render(request, 'wordsinmovies_main/index.html',
             {'form':SearchForm(initial=blank_search_form),'error': 1, 'error_msg': 'Wrong query format.'})
 
@@ -148,7 +151,12 @@ def search(request):
         results = QuerySphinx(sphinx_client, mydb, mydbcursor, query,
             lang1, lang2, start, res_per_page, pos_tags, imdb_id)
     except:
-        return render(request, 'wordsinmovies_main/index.html',
+        try:
+            sphinx_client, mydb, mydbcursor = MakeConnections()
+            results = QuerySphinx(sphinx_client, mydb, mydbcursor, query,
+                lang1, lang2, start, res_per_page, pos_tags, imdb_id)
+        except:
+            return render(request, 'wordsinmovies_main/index.html',
             {'form': form, 'error': 1, 'error_msg': 'No matches found. Try again!'})
 
 

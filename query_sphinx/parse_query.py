@@ -42,9 +42,10 @@ def ParseQuery(q, mycursor, fst_lang):
     max_query_length = 13400 #maximum query length accepted by sphinx daemon
     min_infix_len = 3 #see sphinx.conf
 
+    for s in ",?!":
+        q = q.replace(s, ' ')
 
     q = q.replace("'", " '") #any word starting with ' is a separate word
-    q = q.replace(',', '|') #OR for Sphinx
     q = q.lower() #to avoid confusion while comparing
     q = " " + q + " " #to always have fragments at the beggining and at the end
 
